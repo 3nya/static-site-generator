@@ -24,9 +24,15 @@ fn main()->std::io::Result<()> {
         
         let parser = pulldown_cmark::Parser::new(&contents);
         let mut html_output = String::new();
-        pulldown_cmark::html::push_html(&mut html_output, parser);
 
-        println!("{}", html_output);
+        let header = "<!DOCTYPE html>\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n";
+
+        html_output.push_str(header);
+        pulldown_cmark::html::push_html(&mut html_output, parser);
+        html_output.push_str("</body>\n");
+        html_output.push_str("</html>");
+
+        // println!("{}", html_output);
 
         let file_stem = path.file_stem().unwrap();
         let mut new_filename = PathBuf::from(file_stem);
@@ -46,16 +52,6 @@ fn main()->std::io::Result<()> {
         // }
     }
 
-    // let markdown_input: &'static str = "Hello world, this is a ~~complicated~~ *very simple* example.";
-
-    // let iterator: TextMergeStream<'_, Parser<'_>> = TextMergeStream::new(Parser::new(markdown_input));
-    
-    // for event in iterator {
-    //     match event {
-    //         Event::Text(text) => println!("{}", text),
-    //         _ => {}
-    //     }
-    // }
     Ok(())
 
 
