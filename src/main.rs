@@ -16,6 +16,9 @@ fn main()->std::io::Result<()> {
         // let entry = file.clone()?; // handle Result<DirEntry, Error>
         let path = file?.path();
 
+        if path.ends_with("readme.txt") {
+            continue;
+        }
         let contents = fs::read_to_string(&path).expect("expected file");
 
         
