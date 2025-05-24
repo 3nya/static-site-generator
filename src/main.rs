@@ -5,13 +5,33 @@ use std::fs::File;
 use std::path::PathBuf;
 use std::io::Write;
 use std::path::Path;
-fn main()->std::io::Result<()> {
 
-    let directory: fs::ReadDir = fs::read_dir("./content").unwrap();
+pub struct Files {
+    md: Vec<String>,
+    html: Vec<String>,
+}
+impl Files {
+    fn new() -> Result<Files, Box<dyn std::error::Error>> {
+        Ok(Files {
+            md: Vec::new(),
+            html: Vec::new(),
+        })
+        
+    }
+}
+fn main()->std::io::Result<()> {
+    let mut site_files: Files = match Files::new() {
+        Ok(t) => t,
+        Err(_) => todo!()
+    };
+
+
+    let content_directory: fs::ReadDir = fs::read_dir("./content").unwrap();
     let output_dir = Path::new("site");
     // fs::create_dir_all(output_dir)?;
 
-    for file in directory {
+    // parse md files in /content and make html files in /site
+    for file in content_directory {
         // println!("Name: {}", file.unwrap().path().display())
         // let entry = file.clone()?; // handle Result<DirEntry, Error>
         let path = file?.path();
@@ -36,12 +56,16 @@ fn main()->std::io::Result<()> {
 
         let file_stem = path.file_stem().unwrap();
         let mut new_filename = PathBuf::from(file_stem);
+        site_files.html.push(file_stem.unwrap());
+
+
         new_filename.set_extension("html");
 
         let output_path = output_dir.join(new_filename);
         let mut html_file = File::create(output_path)?;
 
         write!(html_file, "{}", html_output)?;
+
 
         // let iterator = TextMergeStream::new(Parser::new(&contents));
         // for event in iterator {
@@ -51,6 +75,15 @@ fn main()->std::io::Result<()> {
         //     }
         // }
     }
+
+    // remove deleted html files
+    let site_directory: fs::ReadDir = fs::read_dir("./site").unwrap();
+
+    // for file in site_directory {
+    //     if content_directory.
+    //     fs::remove_file(path);
+    // }
+
 
     Ok(())
 
