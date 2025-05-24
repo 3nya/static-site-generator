@@ -56,13 +56,20 @@ fn main()->std::io::Result<()> {
 
         let file_stem = path.file_stem().unwrap();
         let mut new_filename = PathBuf::from(file_stem);
-        site_files.html.push(file_stem.unwrap());
 
-
+        site_files.md.push(file_stem.to_str().unwrap().to_string());
         new_filename.set_extension("html");
 
-        let output_path = output_dir.join(new_filename);
+        let output_path : PathBuf;
+        // homepage different output dir
+        if path.ends_with("index.md") {
+            output_path = new_filename;
+        } else {
+            output_path = output_dir.join(new_filename);
+        }
         let mut html_file = File::create(output_path)?;
+
+
 
         write!(html_file, "{}", html_output)?;
 
@@ -79,10 +86,19 @@ fn main()->std::io::Result<()> {
     // remove deleted html files
     let site_directory: fs::ReadDir = fs::read_dir("./site").unwrap();
 
-    // for file in site_directory {
-    //     if content_directory.
-    //     fs::remove_file(path);
-    // }
+    for file in site_directory {
+        let path = file?.path();
+        let file_stem = path.file_stem().unwrap();
+
+        if path.ends_with("styles.css") {
+            continue;
+        }
+
+        if !site_files.md.contains(&file_stem.to_str().unwrap().to_string()) {
+            
+            let _ = fs::remove_file(path);
+        }
+    }
 
 
     Ok(())
