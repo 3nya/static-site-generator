@@ -28,7 +28,7 @@ fn main()->std::io::Result<()> {
 
     let content_directory: fs::ReadDir = fs::read_dir("./content").unwrap();
     let output_dir = Path::new("site");
-    // fs::create_dir_all(output_dir)?;
+    fs::create_dir_all(output_dir)?;
 
     // parse md files in /content and make html files in /site
     for file in content_directory {
