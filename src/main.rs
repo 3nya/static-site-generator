@@ -45,7 +45,7 @@ fn main()->std::io::Result<()> {
         let parser = pulldown_cmark::Parser::new(&contents);
         let mut html_output = String::new();
 
-        let header = "<!DOCTYPE html>\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"/styles.css\">\n</head>\n";
+        let header = "<!DOCTYPE html>\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"/styles.css\">\n<script src=\"components/header.js\" type=\"text/javascript\" defer></script>\n</head>\n<header-component></header-component>\n";
 
         html_output.push_str(header);
         pulldown_cmark::html::push_html(&mut html_output, parser);
