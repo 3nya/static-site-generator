@@ -5,36 +5,42 @@ class Header extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = `
-      <input type="text" id="myInput" placeholder="Search for names.." title="Type in a name">
+      <input type="text" id="myInput" placeholder="">
 
       <ul id="myUL" style="display: none;">
-            // figure out to put items here
+
       </ul>
 
       <style>
         #myInput {
+            border-radius: 15px;
             width: 100%;
             font-size: 16px;
             padding: 12px 20px;
             border: 1px solid #ddd;
-            margin-bottom: 12px;
+            margin-bottom: 5px;
         }
 
         #myUL {
+            width: 100%;
+            border-radius: 15px;
             list-style-type: none;
             padding: 0;
             margin: 0;
+            z-index: 1;
+            position: absolute;
         }
 
         #myUL li a {
-            border: 1px solid #ddd;
-            margin-top: -1px;
-            background-color: #f6f6f6;
-            padding: 12px;
+            width: 100%;
+            padding: 12px 20px;
+            background-color: #f6f6f6da;
             text-decoration: none;
             font-size: 18px;
             color: black;
             display: block;
+            z-index: 1;
+            position: relative;
         }
 
         #myUL li a:hover:not(.header) {
