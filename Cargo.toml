@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 pulldown-cmark = { version = "0.13.0", features=["html"], default-features = false }
+serde_json = "1.0.142"
