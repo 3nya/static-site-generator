@@ -45,8 +45,8 @@ fn main()->std::io::Result<()> {
         // put files into a list for header.js
         // <li><a href="https://google.com">Adele</a></li>
 
-        site_files.html.push("<li><a href=\"".to_owned() + &path.to_str().unwrap().to_string() + "\">"
-         + &path.to_str().unwrap().to_string() + "</a></li>");
+        site_files.html.push("<li><a href=\"".to_owned() + &path.file_stem().unwrap().to_str().unwrap() + ".html\">"
+         + &path.file_stem().unwrap().to_str().unwrap() + "        <i>" + &path.to_str().unwrap().to_string() + "</i></a></li>");
 
         // let list_items = site_files.html.join("\n");
         
