@@ -51,6 +51,13 @@ class Header extends HTMLElement {
 
     const input = this.querySelector("#myInput");
     const ul = this.querySelector("#myUL");
+
+    if (typeof FILE_LIST !== 'undefined') {
+        FILE_LIST.forEach(item => {
+            ul.innerHTML += item;
+        });
+    }
+
     const li = ul.getElementsByTagName("li");
 
     input.addEventListener("keyup", function () {

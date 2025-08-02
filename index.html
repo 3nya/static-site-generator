@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet" href="/styles.css">
-<script src="components/header.js" type="text/javascript" defer></script>
-</head>
-<header-component></header-component>
+        <html>
+        <head>
+            <link rel="stylesheet"href="/styles.css">
+            <script src="components/header.js" type="text/javascript"defer></script>
+        </head>
+        <header-component></header-component>
+        <script> const FILE_LIST = ["<li><a href=\"./content/index.md\">./content/index.md</a></li>"]; </script>
+        <script type="module" src="components/header.js">
+        </script>
+        <body>
 <h1>Static site generator</h1>
 <p>Edit <code>content/index.md</code> and <code>styles.css</code>.</p>
 <p><code>cargo run</code> to recompile.</p>

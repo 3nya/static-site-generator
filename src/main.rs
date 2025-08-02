@@ -5,6 +5,7 @@ use std::fs::File;
 use std::path::PathBuf;
 use std::io::Write;
 use std::path::Path;
+use serde_json::json;
 
 pub struct Files {
     md: Vec<String>,
@@ -41,18 +42,34 @@ fn main()->std::io::Result<()> {
         }
         let contents = fs::read_to_string(&path).expect("expected file");
 
+        // put files into a list for header.js
+        // <li><a href="https://google.com">Adele</a></li>
+
+        site_files.html.push("<li><a href=\"".to_owned() + &path.to_str().unwrap().to_string() + "\">"
+         + &path.to_str().unwrap().to_string() + "</a></li>");
+
+        // let list_items = site_files.html.join("\n");
         
         let parser = pulldown_cmark::Parser::new(&contents);
         let mut html_output = String::new();
 
-        let header = "<!DOCTYPE html>\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"/styles.css\">\n<script src=\"components/header.js\" type=\"text/javascript\" defer></script>\n</head>\n<header-component></header-component>\n";
-
-        html_output.push_str(header);
+        let json_data = json!(site_files.html);
+        let header = format!("<!DOCTYPE html>
+        <html>
+        <head>
+            <link rel=\"stylesheet\"href=\"/styles.css\">
+            <script src=\"components/header.js\" type=\"text/javascript\"defer></script>
+        </head>
+        <header-component></header-component>
+        <script> const FILE_LIST = {}; </script>
+        <script type=\"module\" src=\"components/header.js\">
+        </script>
+        <body>\n"
+        , json_data);
+        html_output.push_str(&header);
         pulldown_cmark::html::push_html(&mut html_output, parser);
         html_output.push_str("</body>\n");
         html_output.push_str("</html>");
-
-        // println!("{}", html_output);
 
         let file_stem = path.file_stem().unwrap();
         let mut new_filename = PathBuf::from(file_stem);
@@ -74,13 +91,7 @@ fn main()->std::io::Result<()> {
         write!(html_file, "{}", html_output)?;
 
 
-        // let iterator = TextMergeStream::new(Parser::new(&contents));
-        // for event in iterator {
-        //     match event {
-        //         Event::Text(text) => println!("{}", text),
-        //         _ => {}
-        //     }
-        // }
+
     }
 
     // remove deleted html files
@@ -97,6 +108,10 @@ fn main()->std::io::Result<()> {
         if !site_files.md.contains(&file_stem.to_str().unwrap().to_string()) {
             
             let _ = fs::remove_file(path);
+
+            // remove it from path
+
+
         }
     }
 
